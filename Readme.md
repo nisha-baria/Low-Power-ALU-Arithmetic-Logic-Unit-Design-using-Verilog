@@ -22,6 +22,7 @@ Low-Power-ALU-Verilog/
 ├── waveforms/         # EPWave Simulation Waveform Captures
 ├── reports/           # Simulation Run Reports & Log Summaries
 └── .gitignore         # Ignores tool-generated temporary file types
+```
 
 ### 📊 ALU Core Opcode & Operation Map
 
