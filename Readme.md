@@ -23,105 +23,22 @@ Low-Power-ALU-Verilog/
 ├── reports/           # Simulation Run Reports & Log Summaries
 └── .gitignore         # Ignores tool-generated temporary file types
 
-## 📊 ALU Core Opcode & Operation Map
+### 📊 ALU Core Opcode & Operation Map
 
-<table style="width:100%; border-collapse: collapse; text-align: left; font-family: sans-serif;">
-  <thead>
-    <tr style="background-color: #1f4287; color: white;">
-      <th style="padding: 12px; border: 1px solid #ddd;">Opcode (OPC)</th>
-      <th style="padding: 12px; border: 1px solid #ddd;">Operation</th>
-      <th style="padding: 12px; border: 1px solid #ddd;">Core Functionality</th>
-      <th style="padding: 12px; border: 1px solid #ddd;">Active Flags</th>
-      <th style="padding: 12px; border: 1px solid #ddd;">Low-Power Behavior</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr style="background-color: #f8f9fa;">
-      <td style="padding: 10px; border: 1px solid #ddd;"><b>4'b0000</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #007bff;"><b>ADD</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Arithmetic Addition</td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Z, N, C, V</td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #28a745;">Activates Adder Only; Isolates Shifter/Logic</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px; border: 1px solid #ddd;"><b>4'b0001</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #007bff;"><b>SUB</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Arithmetic Subtraction</td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Z, N, C, V</td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #28a745;">Passes inverted operand to gated adder block</td>
-    </tr>
-    <tr style="background-color: #f8f9fa;">
-      <td style="padding: 10px; border: 1px solid #ddd;"><b>4'b0010</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #e83e8c;"><b>AND</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Bitwise Logical AND</td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Z, N</td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #28a745;">Activates Logic Block Only; Adder inputs gated</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px; border: 1px solid #ddd;"><b>4'b0011</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #e83e8c;"><b>OR</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Bitwise Logical OR</td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Z, N</td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #28a745;">Activates Logic Block Only; Adder inputs gated</td>
-    </tr>
-    <tr style="background-color: #f8f9fa;">
-      <td style="padding: 10px; border: 1px solid #ddd;"><b>4'b0100</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #e83e8c;"><b>XOR</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Bitwise Logical XOR</td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Z, N</td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #28a745;">Activates Logic Block Only; Adder inputs gated</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px; border: 1px solid #ddd;"><b>4'b0101</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #e83e8c;"><b>NOR</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Bitwise Logical NOR</td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Z, N</td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #28a745;">Activates Logic Block Only; Adder inputs gated</td>
-    </tr>
-    <tr style="background-color: #f8f9fa;">
-      <td style="padding: 10px; border: 1px solid #ddd;"><b>4'b0110</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #fd7e14;"><b>SLL</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Shift Left Logical</td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Z, N</td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #dc3545;">Masked to 1-bit shift step if lp_mode is active</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px; border: 1px solid #ddd;"><b>4'b0111</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #fd7e14;"><b>SRL</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Shift Right Logical</td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Z, N</td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #dc3545;">Masked to 1-bit shift step if lp_mode is active</td>
-    </tr>
-    <tr style="background-color: #f8f9fa;">
-      <td style="padding: 10px; border: 1px solid #ddd;"><b>4'b1000</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #fd7e14;"><b>SRA</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Shift Right Arithmetic</td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Z, N</td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #dc3545;">Masked to 1-bit shift step if lp_mode is active</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px; border: 1px solid #ddd;"><b>4'b1001</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #6f42c1;"><b>SLT</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Signed Less Than Comparison</td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Z, N</td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #28a745;">Activates dedicated comparator structure</td>
-    </tr>
-    <tr style="background-color: #f8f9fa;">
-      <td style="padding: 10px; border: 1px solid #ddd;"><b>4'b1010</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #6c757d;"><b>PASS A</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Direct Pass Input A</td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Z, N</td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #dc3545;">Bypasses all processing units to avoid toggling</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px; border: 1px solid #ddd;"><b>4'b1011</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #6c757d;"><b>PASS B</b></td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Direct Pass Input B</td>
-      <td style="padding: 10px; border: 1px solid #ddd;">Z, N</td>
-      <td style="padding: 10px; border: 1px solid #ddd; color: #dc3545;">Bypasses all processing units to avoid toggling</td>
-    </tr>
-  </tbody>
-</table>
+| Opcode (OPC) | Operation | Core Functionality | Active Flags | Low-Power Behavior |
+| :---: | :---: | :--- | :---: | :--- |
+| `4'b0000` | **ADD** | Arithmetic Addition | Z, N, C, V | Activates Adder Only; Isolates Shifter/Logic |
+| `4'b0001` | **SUB** | Arithmetic Subtraction | Z, N, C, V | Passes inverted operand to gated adder block |
+| `4'b0010` | **AND** | Bitwise Logical AND | Z, N | Activates Logic Block Only; Adder inputs gated |
+| `4'b0011` | **OR** | Bitwise Logical OR | Z, N | Activates Logic Block Only; Adder inputs gated |
+| `4'b0100` | **XOR** | Bitwise Logical XOR | Z, N | Activates Logic Block Only; Adder inputs gated |
+| `4'b0101` | **NOR** | Bitwise Logical NOR | Z, N | Activates Logic Block Only; Adder inputs gated |
+| `4'b0110` | **SLL** | Shift Left Logical | Z, N | Masked to 1-bit shift step if `lp_mode` is active |
+| `4'b0111` | **SRL** | Shift Right Logical | Z, N | Masked to 1-bit shift step if `lp_mode` is active |
+| `4'b1000` | **SRA** | Shift Right Arithmetic | Z, N | Masked to 1-bit shift step if `lp_mode` is active |
+| `4'b1001` | **SLT** | Signed Less Than | Z, N | Activates dedicated comparator structure |
+| `4'b1010` | **PASS A** | Direct Pass Input A | Z, N | Bypasses all processing units to avoid toggling |
+| `4'b1011` | **PASS B** | Direct Pass Input B | Z, N | Bypasses all processing units to avoid toggling |
 
 ## 💻 Simulation & Verification FlowThe design has been successfully simulation-verified via open-source tools using Icarus Verilog and EPWave on EDA Playground. 
 
